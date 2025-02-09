@@ -1,0 +1,7 @@
+Building DAG of jobs...
+MissingInputException in rule rlz_repair in file /blue/boucher/rvarki/Testing/RLZ-RePair_Tests/rlz-repair_experiment/SARS/Snakefile, line 26:
+Missing input files for rule rlz_repair:
+    output: sequences/rlz-repair/SARS/25/SARS.25.fa.rlz, sequences/rlz-repair/SARS/25/SARS.25.fa.R, sequences/rlz-repair/SARS/25/SARS.25.fa.C
+    wildcards: prefix=SARS, ref=25
+    affected files:
+        /blue/boucher/rvarki/rlz-repair_analysis/references/rlz-repair/SARS/SARS.fa
