@@ -1,0 +1,46 @@
+{
+    "__default__": {
+        "account": "boucher",
+        "qos": "boucher",
+        "cpus-per-task": "1",
+        "Nodes": 1,
+        "mem": "20gb",
+        "runtime": "24:00:00",
+        "jobname": "repair",
+        "mail": "rvarki@ufl.edu",
+        "mail_type": "FAIL",
+        "out": "logs/repair/SARS/repair.%j.log",
+        "exclusive": "",
+        "specificPartition": ""
+    },
+
+    "rlz_repair": {
+        "account": "boucher",
+        "qos": "boucher",
+        "cpus-per-task": "1",
+        "Nodes": 1,
+        "mem": "20gb",
+        "runtime": "24:00:00",
+        "jobname": "repair_compression",
+        "mail": "rvarki@ufl.edu",
+        "mail_type": "FAIL",
+        "out": "logs/repair/SARS/repair.%j.log",
+        "exclusive": "",
+        "specificPartition": ""
+    },
+
+    "rlz_repair_decompression": {
+        "account": "boucher",
+        "qos": "boucher",
+        "cpus-per-task": "1",
+        "Nodes": 1,
+        "mem": "20gb",
+        "runtime": "24:00:00",
+        "jobname": "repair_decompression",
+        "mail": "rvarki@ufl.edu",
+        "mail_type": "FAIL",
+        "out": "logs/repair/SARS/repair.%j.log",
+        "exclusive": "",
+        "specificPartition": ""
+    }
+}
