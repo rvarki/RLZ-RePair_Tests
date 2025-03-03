@@ -25,8 +25,8 @@
         "mail": "rvarki@ufl.edu",
         "mail_type": "FAIL",
         "out": "logs/rlz-repair/SARS/rlz-repair.%j.log",
-        "exclusive": "--exclusive",
-        "specificPartition": "--partition=hpg-default"
+        "exclusive": "",
+        "specificPartition": ""
     },
 
     "rlz_repair_decompression": {
