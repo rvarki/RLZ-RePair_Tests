@@ -13,10 +13,10 @@ outfiles = []
 # Output files to generate
 for prefix in config["prefix"]:
     for ref in config["ref"]:
-        outfiles.append("sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}.headerless.fa.rlz".format(prefix=prefix,ref=ref))
-        outfiles.append("sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}.headerless.fa.R".format(prefix=prefix,ref=ref))
-        outfiles.append("sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}.headerless.fa.C".format(prefix=prefix,ref=ref))
-        outfiles.append("sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}.headerless.fa.out".format(prefix=prefix,ref=ref))
+        outfiles.append("sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.rlz".format(prefix=prefix,ref=ref))
+        outfiles.append("sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.R".format(prefix=prefix,ref=ref))
+        outfiles.append("sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.C".format(prefix=prefix,ref=ref))
+        outfiles.append("sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.out".format(prefix=prefix,ref=ref))
         
 #######################################################################################################
 
@@ -32,9 +32,9 @@ rule rlz_repair:
     params:
         log = "logs/rlz-repair/{prefix}/{prefix}.{ref}.rlz-repair.log",
     output:
-        rlz = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}.headerless.fa.rlz",
-        R = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}.headerless.fa.R",
-        C = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}.headerless.fa.C",
+        rlz = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.rlz",
+        R = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.R",
+        C = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.C",
     shell:
         """
         module load gcc/12
@@ -44,16 +44,16 @@ rule rlz_repair:
 
 rule rlz_repair_decompression:
     input:
-        rlz = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}.headerless.fa.rlz",
-        R = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}.headerless.fa.R",
-        C = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}.headerless.fa.C",
+        rlz = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.rlz",
+        R = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.R",
+        C = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.C",
         script = config["script"],
     benchmark: "benchmarks/rlz-repair/{prefix}/{prefix}.{ref}.rlz-repair.decompress.benchmark.txt",
     params:
         prefix = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa",
         log = "logs/rlz-repair/{prefix}/{prefix}.{ref}.rlz-repair.log",
     output:
-        decompress = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}.headerless.fa.out",
+        decompress = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.out",
     shell:
         """
         module load gcc/12
