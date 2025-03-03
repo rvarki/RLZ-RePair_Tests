@@ -1,7 +1,46 @@
-# Untracked files
+# Prerequisites
+*.d
+*.o
+*.obj
+*.so
+*.a
+*.lib
+*.dll
 
+# Executables
+*.exe
 *.out
+*.app
+
+# Logs and temporary files
 *.log
-*.png
-*.csv
-*.txt
+*.tmp
+*.swp
+*.lock
+
+# Build directories
+build/
+bin/
+debug/
+release/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Visual Studio and Xcode files
+*.vcxproj*
+*.xcworkspace/
+*.xcuserdata/
+
+# CMake files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Editor and IDE settings
+.vscode/
+.idea/
+*.code-workspace
+
