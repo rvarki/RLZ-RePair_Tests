@@ -1,0 +1,64 @@
+import os
+
+# Constrain the wildcards
+wildcard_constraints:
+    ref= '|'.join([re.escape(x) for x in config["ref"]]),
+    prefix= '|'.join([re.escape(x) for x in config["prefix"]]),
+
+# Configure the working directory for the script
+workdir: config['workdir']
+
+outfiles = []
+
+# Output files to generate
+for prefix in config["prefix"]:
+    for ref in config["ref"]:
+        outfiles.append("sequences/repair/{prefix}/{ref}/tmp/{prefix}.{ref}.headerless.fa.R".format(prefix=prefix,ref=ref))
+        outfiles.append("sequences/repair/{prefix}/{ref}/tmp/{prefix}.{ref}.headerless.fa.C".format(prefix=prefix,ref=ref))
+        outfiles.append("sequences/repair/{prefix}/{ref}/tmp/{prefix}.{ref}.headerless.fa".format(prefix=prefix,ref=ref))
+        
+#######################################################################################################
+
+rule all:
+    input: outfiles
+
+rule repair:
+    input:
+        seq    = config["sequence"] + "{ref}/" + "chr19.{ref}.headerless.fa",
+        script = config["compress_script"]
+    benchmark: "benchmarks/repair/{prefix}/{prefix}.{ref}.repair.compress.benchmark.txt",
+    params:
+        tmp = "sequences/repair/{prefix}/{ref}/tmp",
+        R = "sequences/repair/{prefix}/{ref}/{prefix}.{ref}.headerless.fa.R",
+        C = "sequences/repair/{prefix}/{ref}/{prefix}.{ref}.headerless.fa.C",
+        log = "logs/repair/{prefix}/{prefix}.{ref}.repair.log",
+    output:
+        tmpR = "sequences/repair/{prefix}/{ref}/tmp/{prefix}.{ref}.headerless.fa.R",
+        tmpC = "sequences/repair/{prefix}/{ref}/tmp/{prefix}.{ref}.headerless.fa.C",
+    shell:
+        """
+        module load gcc/12
+        module load python3
+        {input.script} {input.seq}
+        mkdir -p {params.tmp}
+        mv {params.R} {output.tmpR}
+        mv {params.C} {output.tmpC}
+        """
+
+rule repair_decompression:
+    input:
+        tmpR = "sequences/repair/{prefix}/{ref}/tmp/{prefix}.{ref}.headerless.fa.R",
+        tmpC = "sequences/repair/{prefix}/{ref}/tmp/{prefix}.{ref}.headerless.fa.C",
+        script = config["decompress_script"],
+    benchmark: "benchmarks/repair/{prefix}/{prefix}.{ref}.repair.decompress.benchmark.txt",
+    params:
+        prefix = "sequences/repair/{prefix}/{ref}/tmp/{prefix}.{ref}.headerless.fa",
+        log = "logs/repair/{prefix}/{prefix}.{ref}.repair.log",
+    output:
+        decompress = "sequences/repair/{prefix}/{ref}/tmp/{prefix}.{ref}.headerless.fa",
+    shell:
+        """
+        module load gcc/12
+        module load python3
+        {input.script} {params.prefix} 
+        """
