@@ -4,14 +4,13 @@
         "qos": "boucher",
         "cpus-per-task": "1",
         "Nodes": 1,
-        "mem": "100gb",
+        "mem": "50gb",
         "runtime": "24:00:00",
         "jobname": "rlz_repair",
         "mail": "rvarki@ufl.edu",
         "mail_type": "FAIL",
         "out": "logs/rlz-repair/SARS/rlz-repair.%j.log",
-        "exclusive": "",
-        "specificPartition": ""
+        "specificPartition": "hpg-milan"
     },
 
     "rlz_repair": {
@@ -19,14 +18,13 @@
         "qos": "boucher",
         "cpus-per-task": "1",
         "Nodes": 1,
-        "mem": "100gb",
+        "mem": "50gb",
         "runtime": "24:00:00",
         "jobname": "rlz_repair_compression",
         "mail": "rvarki@ufl.edu",
         "mail_type": "FAIL",
         "out": "logs/rlz-repair/SARS/rlz-repair.%j.log",
-        "exclusive": "",
-        "specificPartition": ""
+        "specificPartition": "hpg-milan"
     },
 
     "rlz_repair_decompression": {
@@ -34,13 +32,12 @@
         "qos": "boucher",
         "cpus-per-task": "1",
         "Nodes": 1,
-        "mem": "100gb",
+        "mem": "50gb",
         "runtime": "24:00:00",
         "jobname": "rlz_repair_decompression",
         "mail": "rvarki@ufl.edu",
         "mail_type": "FAIL",
         "out": "logs/rlz-repair/SARS/rlz-repair.%j.log",
-        "exclusive": "",
-        "specificPartition": ""
+        "specificPartition": "hpg-milan"
     }
 }

@@ -26,7 +26,7 @@ rule all:
 rule rlz_repair:
     input:
         seq    = config["sequence"] + "{ref}/" + "SARS.{ref}k.headerless.fa",
-        ref    = config["reference"] + "SARS.headerless.fa",
+        ref    = config["reference"] + "SARS.91.fa",
         script = config["script"]
     benchmark: "benchmarks/rlz-repair/{prefix}/{prefix}.{ref}.rlz-repair.compress.benchmark.txt",
     params:

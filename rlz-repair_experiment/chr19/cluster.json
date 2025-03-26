@@ -10,8 +10,7 @@
         "mail": "rvarki@ufl.edu",
         "mail_type": "FAIL",
         "out": "logs/rlz-repair/chr19/rlz-repair.%j.log",
-        "exclusive": "",
-        "specificPartition": ""
+        "specificPartition": "hpg-milan"
     },
 
     "rlz_repair": {
@@ -25,7 +24,6 @@
         "mail": "rvarki@ufl.edu",
         "mail_type": "FAIL",
         "out": "logs/rlz-repair/chr19/rlz-repair.%j.log",
-        "exclusive": "",
         "specificPartition": "hpg-milan"
     },
 
@@ -40,7 +38,6 @@
         "mail": "rvarki@ufl.edu",
         "mail_type": "FAIL",
         "out": "logs/rlz-repair/chr19/rlz-repair.%j.log",
-        "exclusive": "",
         "specificPartition": "hpg-milan"
     }
 }
