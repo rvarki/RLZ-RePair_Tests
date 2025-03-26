@@ -5,9 +5,9 @@ import os
 import matplotlib.ticker as ticker
 
 def extract_file_number_and_software(filename):
-    match = re.search(r'chr\d+\.(\d+)\.([\w-]+)\.(\w+)', filename)  # Allow hyphen in the software name
-    return (int(match.group(1)), match.group(2)) if match else (None, None)
-
+    match = re.search(r'(\w+)\.(\d+)\.([\w-]+)\.([\w-]+)\.(\w+)', filename)
+    return (int(match.group(2)), match.group(3)) if match else (None, None) 
+    
 def get_files_from_directories(directories, extension):
     filenames = []
     for directory in directories:
@@ -67,9 +67,9 @@ def plot_file_numbers(directories, extension, output_basename, sample):
         plt.savefig(f"{output_basename}.{ext}")
 
 # Example usage
-plot_file_numbers(["/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rlz-repair/chr19", 
-                    "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/repair/chr19"], 
+plot_file_numbers(["/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rlz-repair/SARS", 
+                    "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/repair/SARS"], 
                     ".compress.benchmark.txt",
-                    "chr19_time",
-                    "Chromosome 19")
+                    "sars_time",
+                    "SARS-CoV-2")
 
