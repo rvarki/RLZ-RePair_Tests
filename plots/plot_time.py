@@ -16,7 +16,7 @@ def get_files_from_directories(directories, extension):
                 filenames.append(os.path.join(directory, file))
     return filenames
 
-def plot_file_numbers(directories, extension, output_basename, sample):
+def plot_file_numbers(directories, extension, output_basename, sample, multiplier):
     filenames = get_files_from_directories(directories, extension)
     file_data = [extract_file_number_and_software(os.path.basename(f)) + (f,) for f in filenames]
     file_data = [(num, soft, f) for num, soft, f in file_data if num is not None]
@@ -56,7 +56,10 @@ def plot_file_numbers(directories, extension, output_basename, sample):
     plt.gca().xaxis.set_minor_locator(ticker.NullLocator())  # Remove extra minor ticks
     
     # Formatting
-    plt.xlabel('Haplotypes (Log Scale)')
+    if multiplier:
+        plt.xlabel('Haplotypes (1000x) (Log Scale)')
+    else:
+        plt.xlabel('Haplotypes (Log Scale)')
     plt.ylabel('Time (s)')
     plt.title(sample)
     plt.legend()
@@ -71,5 +74,6 @@ plot_file_numbers(["/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rlz-repa
                     "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/repair/SARS"], 
                     ".compress.benchmark.txt",
                     "sars_time",
-                    "SARS-CoV-2")
+                    "SARS-CoV-2",
+                    True)
 
