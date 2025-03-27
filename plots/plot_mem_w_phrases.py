@@ -8,7 +8,7 @@ import matplotlib.ticker as ticker
 # sorted_phrases = [323494, 1229369, 2437668, 4545892, 9033275, 18035783]
 
 # Uncommennt if using Chr 19
-sorted_phrases = [104251, 313186, 729688, 1559103, 3234363, 6555312] # Remove 1 and 128
+sorted_phrases = [104251, 313186, 729688, 1559103, 3234363, 6555312, 13284874, 26668057, 54167410]
 
 def extract_file_number_and_software(filename):
     match = re.search(r'(\w+)\.(\d+)\.([\w-]+)\.([\w-]+)\.(\w+)', filename)
@@ -47,7 +47,7 @@ def plot_file_numbers(directories, extension, output_basename, sample, multiplie
         for num in all_file_numbers:
             if num in files:  # Check if the file number is available for this software
                 df = pd.read_csv(files[num], delimiter='\t')
-                if (num != 128 and num != 1): #TODO: Temp remove later
+                if (num != 1): #TODO: Temp remove later
                     memory.append(df['max_rss'].iloc[-1])
         
         # Plot the data for this software

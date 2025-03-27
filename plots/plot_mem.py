@@ -70,10 +70,10 @@ def plot_file_numbers(directories, extension, output_basename, sample, multiplie
         plt.savefig(f"{output_basename}.{ext}")
 
 # Example usage
-plot_file_numbers(["/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rlz-repair/SARS", 
-                    "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/repair/SARS"], 
+plot_file_numbers(["/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rlz-repair/chr19", 
+                    "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/repair/chr19"], 
                     ".compress.benchmark.txt",
-                    "sars_memory",
-                    "SARS-CoV-2",
-                    True)
+                    "chr19_memory",
+                    "Chromosome 19",
+                    False)
 
