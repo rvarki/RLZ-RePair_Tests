@@ -1,0 +1,58 @@
+import os
+
+# Constrain the wildcards
+wildcard_constraints:
+    ref= '|'.join([re.escape(x) for x in config["ref"]]),
+    prefix= '|'.join([re.escape(x) for x in config["prefix"]]),
+
+# Configure the working directory for the script
+workdir: config['workdir']
+
+outfiles = []
+
+# Output files to generate
+for prefix in config["prefix"]:
+    for ref in config["ref"]:
+        outfiles.append("sequences/repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.R".format(prefix=prefix,ref=ref))
+        outfiles.append("sequences/repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.C".format(prefix=prefix,ref=ref))
+        outfiles.append("sequences/repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.out".format(prefix=prefix,ref=ref))
+        
+#######################################################################################################
+
+rule all:
+    input: outfiles
+
+rule repair:
+    input:
+        seq    = config["sequence"] + "{ref}/" + "SARS.{ref}k.headerless.fa",
+        script = config["compress_script"]
+    benchmark: "benchmarks/repair/{prefix}/{prefix}.{ref}.repair.compress.benchmark.txt",
+    params:
+        log = "logs/repair/{prefix}/{prefix}.{ref}.repair.log",
+    output:
+        R = "sequences/repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.R",
+        C = "sequences/repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.C",
+    shell:
+        """
+        module load gcc/12
+        module load python3
+        {input.script} {input.seq}
+        """
+
+rule repair_decompression:
+    input:
+        R = "sequences/repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.R",
+        C = "sequences/repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.C",
+        script = config["decompress_script"],
+    benchmark: "benchmarks/repair/{prefix}/{prefix}.{ref}.repair.decompress.benchmark.txt",
+    params:
+        prefix = "sequences/repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa",
+        log = "logs/repair/{prefix}/{prefix}.{ref}.repair.log",
+    output:
+        decompress = "sequences/repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.out",
+    shell:
+        """
+        module load gcc/12
+        module load python3
+        {input.script} {params.prefix} 
+        """

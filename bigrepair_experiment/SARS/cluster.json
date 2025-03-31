@@ -1,0 +1,43 @@
+{
+    "__default__": {
+        "account": "boucher",
+        "qos": "boucher",
+        "cpus-per-task": "1",
+        "Nodes": 1,
+        "mem": "50gb",
+        "runtime": "24:00:00",
+        "jobname": "repair",
+        "mail": "rvarki@ufl.edu",
+        "mail_type": "FAIL",
+        "out": "logs/repair/SARS/repair.%j.log",
+        "specificPartition": "hpg-milan"
+    },
+
+    "repair": {
+        "account": "boucher",
+        "qos": "boucher",
+        "cpus-per-task": "1",
+        "Nodes": 1,
+        "mem": "50gb",
+        "runtime": "24:00:00",
+        "jobname": "repair_compression",
+        "mail": "rvarki@ufl.edu",
+        "mail_type": "FAIL",
+        "out": "logs/repair/SARS/repair.%j.log",
+        "specificPartition": "hpg-milan"
+    },
+
+    "repair_decompression": {
+        "account": "boucher",
+        "qos": "boucher",
+        "cpus-per-task": "1",
+        "Nodes": 1,
+        "mem": "50gb",
+        "runtime": "24:00:00",
+        "jobname": "repair_decompression",
+        "mail": "rvarki@ufl.edu",
+        "mail_type": "FAIL",
+        "out": "logs/repair/SARS/repair.%j.log",
+        "specificPartition": "hpg-milan"
+    }
+}

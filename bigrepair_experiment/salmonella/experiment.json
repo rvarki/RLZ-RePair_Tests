@@ -1,0 +1,9 @@
+{
+  "workdir": "/blue/boucher/rvarki/rlz-repair_analysis",
+  "sequence": "/blue/boucher/rvarki/rlz-repair_analysis/sequences/repair/salmonella/",
+  "compress_script": "/blue/boucher/rvarki/Testing/repair/repair",
+  "decompress_script": "/blue/boucher/rvarki/Testing/repair/despair",
+  "ref": ["50","100","1000"],
+  "prefix": ["salmonella"]
+}
+
