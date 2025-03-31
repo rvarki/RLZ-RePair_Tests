@@ -51,9 +51,11 @@ def plot_file_numbers(directories, extension, output_basename, sample, multiplie
     
     # Set x-axis to logarithmic scale
     plt.xscale("log")  # Use logarithmic scale
+    plt.yscale("log")
     plt.xticks(all_file_numbers, labels=[str(num) for num in all_file_numbers])  # Set exact tick values
     plt.gca().xaxis.set_major_locator(ticker.FixedLocator(all_file_numbers))  # Force only your numbers
     plt.gca().xaxis.set_minor_locator(ticker.NullLocator())  # Remove extra minor ticks
+    plt.gca().yaxis.set_minor_locator(ticker.NullLocator())  # Remove extra minor ticks
     
     # Formatting
     if multiplier:
@@ -70,8 +72,10 @@ def plot_file_numbers(directories, extension, output_basename, sample, multiplie
         plt.savefig(f"{output_basename}.{ext}")
 
 # Example usage
-plot_file_numbers(["/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rlz-repair/chr19", 
-                    "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/repair/chr19"], 
+plot_file_numbers(["/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rlz-repair/chr19/hpg-milan", 
+                    "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/repair/chr19",
+                    "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/bigrepair/chr19",
+                    "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rerepair/chr19"], 
                     ".compress.benchmark.txt",
                     "chr19_time",
                     "Chromosome 19",
