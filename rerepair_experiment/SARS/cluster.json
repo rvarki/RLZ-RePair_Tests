@@ -1,15 +1,15 @@
 {
     "__default__": {
         "account": "boucher",
-        "qos": "boucher",
+        "qos": "boucher-b",
         "cpus-per-task": "1",
         "Nodes": 1,
-        "mem": "50gb",
+        "mem": "100gb",
         "runtime": "24:00:00",
-        "jobname": "rlz_repair",
+        "jobname": "rerepair",
         "mail": "rvarki@ufl.edu",
         "mail_type": "FAIL",
-        "out": "logs/rlz-repair/SARS/rlz-repair.%j.log",
+        "out": "logs/rerepair/SARS/rerepair.%j.log",
         "specificPartition": "hpg-milan"
     },
 
@@ -20,10 +20,10 @@
         "Nodes": 1,
         "mem": "100gb",
         "runtime": "24:00:00",
-        "jobname": "rlz_repair_compression",
+        "jobname": "rerepair_compression",
         "mail": "rvarki@ufl.edu",
         "mail_type": "FAIL",
-        "out": "logs/rlz-repair/SARS/rlz-repair.%j.log",
+        "out": "logs/rerepair/SARS/rerepair.%j.log",
         "specificPartition": "hpg-milan"
     },
 
@@ -32,12 +32,12 @@
         "qos": "boucher-b",
         "cpus-per-task": "1",
         "Nodes": 1,
-        "mem": "50gb",
+        "mem": "100gb",
         "runtime": "24:00:00",
-        "jobname": "rlz_repair_decompression",
+        "jobname": "rerepair_decompression",
         "mail": "rvarki@ufl.edu",
         "mail_type": "FAIL",
-        "out": "logs/rlz-repair/SARS/rlz-repair.%j.log",
+        "out": "logs/rerepair/SARS/rerepair.%j.log",
         "specificPartition": "hpg-milan"
     }
 }

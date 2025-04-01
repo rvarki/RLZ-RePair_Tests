@@ -13,50 +13,49 @@ outfiles = []
 # Output files to generate
 for prefix in config["prefix"]:
     for ref in config["ref"]:
-        outfiles.append("sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.rlz".format(prefix=prefix,ref=ref))
-        outfiles.append("sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.R".format(prefix=prefix,ref=ref))
-        outfiles.append("sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.C".format(prefix=prefix,ref=ref))
-        outfiles.append("sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.out".format(prefix=prefix,ref=ref))
+        outfiles.append("sequences/rerepair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.R".format(prefix=prefix,ref=ref))
+        outfiles.append("sequences/rerepair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.C".format(prefix=prefix,ref=ref))
+        outfiles.append("sequences/rerepair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.out".format(prefix=prefix,ref=ref))
         
 #######################################################################################################
 
 rule all:
     input: outfiles
 
-rule rlz_repair:
+rule rerepair:
     input:
-        seq    = config["sequence"] + "{ref}/" + "SARS.{ref}k.headerless.fa",
-        ref    = config["reference"] + "SARS.91.fa",
+        seq    = config["sequence"] + "{ref}/" + "{prefix}.{ref}k.headerless.fa",
+        pfp    = config["pfp"],
         script = config["script"]
-    benchmark: "benchmarks/rlz-repair/{prefix}/{prefix}.{ref}.rlz-repair.compress.benchmark.txt",
+    benchmark: "benchmarks/rerepair/{prefix}/{prefix}.{ref}.rerepair.compress.benchmark.txt",
     params:
-        log = "logs/rlz-repair/{prefix}/{prefix}.{ref}.rlz-repair.log",
+        outprefix = "sequences/rerepair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa",
+        parse = "sequences/rerepair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.parse",
+        log = "logs/rerepair/{prefix}/{prefix}.{ref}k.rerepair.log",
     output:
-        rlz = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.rlz",
-        R = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.R",
-        C = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.C",
+        R = "sequences/rerepair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.R",
+        C = "sequences/rerepair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.C",
     shell:
         """
         module load gcc/12
-        module load python3
-        {input.script} -s {input.seq} -r {input.ref} -v1 --log {params.log}
+        {input.pfp} pfp++ -t {input.seq} -w 10 -p 100 -c --tmp-dir ${{SLURM_TMPDIR}} --acgt-only
+        {input.pfp} pfp++ -i {params.parse} -w 10 -p 100 -c --tmp-dir ${{SLURM_TMPDIR}}
+        {input.script} {params.outprefix}
         """
 
-rule rlz_repair_decompression:
+rule rerepair_decompression:
     input:
-        rlz = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.rlz",
-        R = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.R",
-        C = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.C",
+        R = "sequences/rerepair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.R",
+        C = "sequences/rerepair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.C",
         script = config["script"],
-    benchmark: "benchmarks/rlz-repair/{prefix}/{prefix}.{ref}.rlz-repair.decompress.benchmark.txt",
+    benchmark: "benchmarks/rerepair/{prefix}/{prefix}.{ref}.rerepair.decompress.benchmark.txt",
     params:
-        prefix = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa",
-        log = "logs/rlz-repair/{prefix}/{prefix}.{ref}.rlz-repair.log",
+        prefix = "sequences/rerepair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa",
+        log = "logs/rerepair/{prefix}/{prefix}.{ref}k.rerepair.log",
     output:
-        decompress = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.out",
+        decompress = "sequences/rerepair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.out",
     shell:
         """
         module load gcc/12
-        module load python3
-        {input.script} -d {params.prefix} -v1 --log {params.log}
+        {input.script} -d {params.prefix} -k
         """

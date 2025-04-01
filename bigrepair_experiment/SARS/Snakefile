@@ -13,46 +13,44 @@ outfiles = []
 # Output files to generate
 for prefix in config["prefix"]:
     for ref in config["ref"]:
-        outfiles.append("sequences/repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.R".format(prefix=prefix,ref=ref))
-        outfiles.append("sequences/repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.C".format(prefix=prefix,ref=ref))
-        outfiles.append("sequences/repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.out".format(prefix=prefix,ref=ref))
+        outfiles.append("sequences/bigrepair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.R".format(prefix=prefix,ref=ref))
+        outfiles.append("sequences/bigrepair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.C".format(prefix=prefix,ref=ref))
+        outfiles.append("sequences/bigrepair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.out".format(prefix=prefix,ref=ref))
         
 #######################################################################################################
 
 rule all:
     input: outfiles
 
-rule repair:
+rule bigrepair:
     input:
         seq    = config["sequence"] + "{ref}/" + "SARS.{ref}k.headerless.fa",
         script = config["compress_script"]
-    benchmark: "benchmarks/repair/{prefix}/{prefix}.{ref}.repair.compress.benchmark.txt",
+    benchmark: "benchmarks/bigrepair/{prefix}/{prefix}.{ref}.bigrepair.compress.benchmark.txt",
     params:
-        log = "logs/repair/{prefix}/{prefix}.{ref}.repair.log",
+        log = "logs/bigrepair/{prefix}/{prefix}.{ref}k.bigrepair.log",
     output:
-        R = "sequences/repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.R",
-        C = "sequences/repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.C",
+        R = "sequences/bigrepair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.R",
+        C = "sequences/bigrepair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.C",
     shell:
         """
         module load gcc/12
-        module load python3
         {input.script} {input.seq}
         """
 
-rule repair_decompression:
+rule bigrepair_decompression:
     input:
-        R = "sequences/repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.R",
-        C = "sequences/repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.C",
+        R = "sequences/bigrepair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.R",
+        C = "sequences/bigrepair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.C",
         script = config["decompress_script"],
-    benchmark: "benchmarks/repair/{prefix}/{prefix}.{ref}.repair.decompress.benchmark.txt",
+    benchmark: "benchmarks/bigrepair/{prefix}/{prefix}.{ref}.bigrepair.decompress.benchmark.txt",
     params:
-        prefix = "sequences/repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa",
-        log = "logs/repair/{prefix}/{prefix}.{ref}.repair.log",
+        prefix = "sequences/bigrepair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa",
+        log = "logs/bigrepair/{prefix}/{prefix}.{ref}k.bigrepair.log",
     output:
-        decompress = "sequences/repair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.out",
+        decompress = "sequences/bigrepair/{prefix}/{ref}/{prefix}.{ref}k.headerless.fa.out",
     shell:
         """
         module load gcc/12
-        module load python3
-        {input.script} {params.prefix} 
+        {input.script} -d {params.prefix} 
         """

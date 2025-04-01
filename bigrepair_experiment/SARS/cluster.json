@@ -1,43 +1,43 @@
 {
     "__default__": {
         "account": "boucher",
-        "qos": "boucher",
+        "qos": "boucher-b",
         "cpus-per-task": "1",
         "Nodes": 1,
-        "mem": "50gb",
+        "mem": "100gb",
         "runtime": "24:00:00",
-        "jobname": "repair",
+        "jobname": "bigrepair",
         "mail": "rvarki@ufl.edu",
         "mail_type": "FAIL",
-        "out": "logs/repair/SARS/repair.%j.log",
+        "out": "logs/bigrepair/SARS/bigrepair.%j.log",
         "specificPartition": "hpg-milan"
     },
 
-    "repair": {
+    "bigrepair": {
         "account": "boucher",
-        "qos": "boucher",
+        "qos": "boucher-b",
         "cpus-per-task": "1",
         "Nodes": 1,
-        "mem": "50gb",
+        "mem": "100gb",
         "runtime": "24:00:00",
-        "jobname": "repair_compression",
+        "jobname": "bigrepair_compression",
         "mail": "rvarki@ufl.edu",
         "mail_type": "FAIL",
-        "out": "logs/repair/SARS/repair.%j.log",
+        "out": "logs/bigrepair/SARS/bigrepair.%j.log",
         "specificPartition": "hpg-milan"
     },
 
-    "repair_decompression": {
+    "bigrepair_decompression": {
         "account": "boucher",
-        "qos": "boucher",
+        "qos": "boucher-b",
         "cpus-per-task": "1",
         "Nodes": 1,
-        "mem": "50gb",
+        "mem": "100gb",
         "runtime": "24:00:00",
-        "jobname": "repair_decompression",
+        "jobname": "bigrepair_decompression",
         "mail": "rvarki@ufl.edu",
         "mail_type": "FAIL",
-        "out": "logs/repair/SARS/repair.%j.log",
+        "out": "logs/bigrepair/SARS/bigrepair.%j.log",
         "specificPartition": "hpg-milan"
     }
 }
