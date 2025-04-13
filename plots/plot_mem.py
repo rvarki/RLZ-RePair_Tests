@@ -5,59 +5,70 @@ import os
 import matplotlib.ticker as ticker
 
 def extract_file_number_and_software(filename):
+    # Expected format: something.NUM.SOFTWARE.RULE.something.txt
     match = re.search(r'(\w+)\.(\d+)\.([\w-]+)\.([\w-]+)\.(\w+)', filename)
-    return (int(match.group(2)), match.group(3)) if match else (None, None) 
+    return (int(match.group(2)), match.group(3)) if match else (None, None)
 
-def get_files_from_directories(directories, extension):
-    filenames = []
-    for directory in directories:
+def plot_file_numbers(directories, extension, output_basename, sample, multiplier, rlz_rules=None):
+    # Mapping of internal software names to display names
+    name_map = {
+        "rlz-repair": "RLZ-RePair",
+        "repair": "RePair",
+        "bigrepair": "BigRePair",
+        "rerepair": r"$\mathrm{Re^2Pair}$",
+    }
+
+    file_data = []
+    for i, directory in enumerate(directories):
+        rule = rlz_rules[i] if rlz_rules and i < len(rlz_rules) else None
         for file in os.listdir(directory):
             if file.endswith(extension):
-                filenames.append(os.path.join(directory, file))
-    return filenames
+                filepath = os.path.join(directory, file)
+                num, soft = extract_file_number_and_software(file)
+                if num is not None:
+                    file_data.append((num, soft, rule if soft == "rlz-repair" else None, filepath))
 
-def plot_file_numbers(directories, extension, output_basename, sample, multiplier):
-    filenames = get_files_from_directories(directories, extension)
-    file_data = [extract_file_number_and_software(os.path.basename(f)) + (f,) for f in filenames]
-    file_data = [(num, soft, f) for num, soft, f in file_data if num is not None]
-    
-    # Group by software name and store files with file numbers
+    # Group files by software+rule combo
     software_groups = {}
-    for num, soft, f in file_data:
-        if soft not in software_groups:
-            software_groups[soft] = {}
-        software_groups[soft][num] = f
-    
-    # Find unique file numbers that are present across any software
-    all_file_numbers = sorted(set(num for num, soft, _ in file_data))  # Collect only file numbers present in the files
-    
+    for num, soft, rule, f in file_data:
+        key = f"{soft}-{rule}" if soft == "rlz-repair" else soft
+        if key not in software_groups:
+            software_groups[key] = {}
+        software_groups[key][num] = f
+
+    # Gather all unique file numbers
+    all_file_numbers = sorted(set(num for num, _, _, _ in file_data))
+
     plt.figure(figsize=(12, 6))
-    
-    # Process each software group
+
     for software, files in software_groups.items():
         sorted_numbers = []
         memory = []
-        
-        # Collect the memory for only the file numbers that are available for this software
+
         for num in all_file_numbers:
-            if num in files:  # Check if the file number is available for this software
+            if num in files:
                 df = pd.read_csv(files[num], delimiter='\t')
+                if 'max_rss' not in df.columns:
+                    continue
                 sorted_numbers.append(num)
                 memory.append(df['max_rss'].iloc[-1])
-        
-        # Plot the data for this software
-        if sorted_numbers:  # Only plot if there are valid numbers
-            plt.plot(sorted_numbers, memory, marker='o', linestyle='-', label=software)
-    
-    # Set x-axis to logarithmic scale
-    plt.xscale("log")  # Use logarithmic scale
-    plt.yscale("log")
-    plt.xticks(all_file_numbers, labels=[str(num) for num in all_file_numbers])  # Set exact tick values
-    plt.gca().xaxis.set_major_locator(ticker.FixedLocator(all_file_numbers))  # Force only your numbers
-    plt.gca().xaxis.set_minor_locator(ticker.NullLocator())  # Remove extra minor ticks
-    plt.gca().yaxis.set_minor_locator(ticker.NullLocator())  # Remove extra minor ticks
-    
-    # Formatting
+
+        if sorted_numbers:
+            base_name = software.split("-")[0]
+            if base_name == "rlz":
+                rule_name = software.split("-")[2] if "-" in software else None
+                display_name = f"RLZ-RePair ({rule_name})"
+            else:
+                display_name = name_map.get(software, software)
+            plt.plot(sorted_numbers, memory, marker='o', linestyle='-', label=display_name)
+
+    # Set x-axis to log scale
+    plt.xscale("log")
+    plt.xticks(all_file_numbers, labels=[str(num) for num in all_file_numbers])
+    plt.gca().xaxis.set_major_locator(ticker.FixedLocator(all_file_numbers))
+    plt.gca().xaxis.set_minor_locator(ticker.NullLocator())
+
+    # Axis labels
     if multiplier:
         plt.xlabel('Haplotypes (1000x) (Log Scale)')
     else:
@@ -65,19 +76,41 @@ def plot_file_numbers(directories, extension, output_basename, sample, multiplie
     plt.ylabel('Memory (MiB)')
     plt.title(sample)
     plt.legend()
-    plt.grid(True, which="both", linestyle="--")  # Show grid for better readability
-    
-    # Save plot in multiple formats
-    for ext in ['jpeg', 'svg', 'eps', 'pdf']:
+    plt.grid(True, which="both", linestyle="--")
+
+    # Save plot
+    for ext in ['jpeg']:
         plt.savefig(f"{output_basename}.{ext}")
 
-# Example usage
-plot_file_numbers(["/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rlz-repair/chr19/hpg-milan", 
-                    "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/repair/chr19",
-                    "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/bigrepair/chr19",
-                    "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rerepair/chr19"], 
-                    ".compress.benchmark.txt",
-                    "chr19_memory",
-                    "Chromosome 19",
-                    False)
+
+# plot_file_numbers(
+#     directories=[
+#         "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rlz-repair/SARS/final_2000_ref",
+#         "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rlz-repair/SARS/final_4000_ref", 
+#         "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rlz-repair/SARS/final_8000_ref",  
+#         "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/repair/SARS",
+#         "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/bigrepair/SARS",
+#         "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rerepair/SARS"
+#     ],
+#     extension=".compress.benchmark.txt",
+#     output_basename="sars_memory",
+#     sample="SARS-CoV-2",
+#     multiplier=True,
+#     rlz_rules=["0.5%", "1%", "2%", None, None, None]
+# )
+
+plot_file_numbers(
+    directories=[
+        "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rlz-repair/chr19/final_chr19_1_ref",
+        "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rlz-repair/chr19/final_20_ref",   
+        "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/repair/chr19",
+        "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/bigrepair/chr19",
+        "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rerepair/chr19"
+    ],
+    extension=".compress.benchmark.txt",
+    output_basename="chr19_memory",
+    sample="Chromosome 19",
+    multiplier=False,
+    rlz_rules=["1 ref","2%", None, None, None]
+)
 
