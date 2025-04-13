@@ -98,7 +98,7 @@ plot_file_numbers(
         "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rerepair/SARS"
     ],
     extension=".compress.benchmark.txt",
-    output_basename="sars_time",
+    output_basename="sars_memory",
     sample="SARS-CoV-2",
     multiplier=True,
     rlz_rules=["0.5%", "1%", "2%", "default", "large", None, None]
@@ -114,7 +114,7 @@ plot_file_numbers(
         "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rerepair/chr19"
     ],
     extension=".compress.benchmark.txt",
-    output_basename="chr19_time",
+    output_basename="chr19_memory",
     sample="Chromosome 19",
     multiplier=False,
     rlz_rules=["1 ref","2%", "default", "large", None, None]
