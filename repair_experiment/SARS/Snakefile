@@ -36,7 +36,7 @@ rule repair:
         """
         module load gcc/12
         module load python3
-        {input.script} {input.seq}
+        {input.script} {input.seq} 100000
         """
 
 rule repair_decompression:

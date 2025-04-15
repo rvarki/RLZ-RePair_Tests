@@ -1,9 +1,9 @@
 {
   "workdir": "/blue/boucher/rvarki/rlz-repair_analysis",
   "sequence": "/blue/boucher/rvarki/rlz-repair_analysis/sequences/rlz-repair/SARS/",
-  "reference": "/blue/boucher/rvarki/rlz-repair_analysis/references/SARS/",
+  "reference": "/blue/boucher/rvarki/rlz-repair_analysis/references/SARS/SARS.2000.headerless.fa",
   "script": "/blue/boucher/rvarki/Testing/RLZ-RePair/build/rlz-repair",
-  "ref": ["50","100","200","400"],
+  "ref": ["10","25","50","100","200","400"],
   "prefix": ["SARS"]
 }
 
