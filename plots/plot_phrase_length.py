@@ -21,7 +21,7 @@ sequence_numbers = [10, 25, 50, 100, 200, 400]
 plt.figure(figsize=(6.4, 4))
 plt.errorbar(sequence_numbers, avg_lengths_0_5, yerr=std_dev_0_5, fmt='-o', color='blue', label='RLZ-RePair (0.5%)', capsize=5)
 plt.errorbar(sequence_numbers, avg_lengths_1, yerr=std_dev_1, fmt='-o', color='orange', label='RLZ-RePair (1%)', capsize=5)
-plt.errorbar(sequence_numbers, avg_lengths_2, yerr=std_dev_1, fmt='-o', color='green', label='RLZ-RePair (2%)', capsize=5)
+plt.errorbar(sequence_numbers, avg_lengths_2, yerr=std_dev_2, fmt='-o', color='green', label='RLZ-RePair (2%)', capsize=5)
 
 # Labels and title
 plt.xscale("log")
@@ -59,7 +59,7 @@ sequence_numbers = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024]
 plt.figure(figsize=(6.4, 4))
 plt.errorbar(sequence_numbers, avg_lengths_0_5, yerr=std_dev_0_5, fmt='-o', color='blue', label='RLZ-RePair (0.5%)', capsize=5)
 plt.errorbar(sequence_numbers, avg_lengths_1, yerr=std_dev_1, fmt='-o', color='orange', label='RLZ-RePair (1%)', capsize=5)
-plt.errorbar(sequence_numbers, avg_lengths_2, yerr=std_dev_1, fmt='-o', color='green', label='RLZ-RePair (2%)', capsize=5)
+plt.errorbar(sequence_numbers, avg_lengths_2, yerr=std_dev_2, fmt='-o', color='green', label='RLZ-RePair (2%)', capsize=5)
 
 # Labels and title
 plt.xscale("log")
