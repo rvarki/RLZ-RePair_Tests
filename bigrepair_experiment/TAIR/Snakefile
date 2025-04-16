@@ -1,0 +1,56 @@
+import os
+
+# Constrain the wildcards
+wildcard_constraints:
+    ref= '|'.join([re.escape(x) for x in config["ref"]]),
+    prefix= '|'.join([re.escape(x) for x in config["prefix"]]),
+
+# Configure the working directory for the script
+workdir: config['workdir']
+
+outfiles = []
+
+# Output files to generate
+for prefix in config["prefix"]:
+    for ref in config["ref"]:
+        outfiles.append("sequences/bigrepair/{prefix}/{ref}/{prefix}.{ref}.headerless.fa.R".format(prefix=prefix,ref=ref))
+        outfiles.append("sequences/bigrepair/{prefix}/{ref}/{prefix}.{ref}.headerless.fa.C".format(prefix=prefix,ref=ref))
+        outfiles.append("sequences/bigrepair/{prefix}/{ref}/{prefix}.{ref}.headerless.fa.out".format(prefix=prefix,ref=ref))
+        
+#######################################################################################################
+
+rule all:
+    input: outfiles
+
+rule bigrepair:
+    input:
+        seq    = config["sequence"] + "{ref}/" + "{prefix}.{ref}.headerless.fa",
+        script = config["compress_script"]
+    benchmark: "benchmarks/bigrepair/{prefix}/{prefix}.{ref}.bigrepair.compress.benchmark.txt",
+    params:
+        log = "logs/bigrepair/{prefix}/{prefix}.{ref}.bigrepair.log"
+    output:
+        R = "sequences/bigrepair/{prefix}/{ref}/{prefix}.{ref}.headerless.fa.R",
+        C = "sequences/bigrepair/{prefix}/{ref}/{prefix}.{ref}.headerless.fa.C",
+    shell:
+        """
+        module load gcc/12
+        {input.script} {input.seq}
+        """
+
+rule bigrepair_decompression:
+    input:
+        R = "sequences/bigrepair/{prefix}/{ref}/{prefix}.{ref}.headerless.fa.R",
+        C = "sequences/bigrepair/{prefix}/{ref}/{prefix}.{ref}.headerless.fa.C",
+        script = config["decompress_script"],
+    benchmark: "benchmarks/bigrepair/{prefix}/{prefix}.{ref}.bigrepair.decompress.benchmark.txt",
+    params:
+        prefix = "sequences/bigrepair/{prefix}/{ref}/{prefix}.{ref}.headerless.fa",
+        log = "logs/bigrepair/{prefix}/{prefix}.{ref}.bigrepair.log",
+    output:
+        decompress = "sequences/bigrepair/{prefix}/{ref}/{prefix}.{ref}.headerless.fa.out",
+    shell:
+        """
+        module load gcc/12
+        {input.script} -d {params.prefix} 
+        """
