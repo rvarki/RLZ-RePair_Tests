@@ -24,7 +24,7 @@ rule all:
 
 rule repair:
     input:
-        seq    = config["sequence"] + "{ref}/" + "SARS.{ref}k.headerless.fa",
+        seq    = config["sequence"] + "{ref}/" + "{prefix}.{ref}k.headerless.fa",
         script = config["compress_script"]
     benchmark: "benchmarks/repair/{prefix}/{prefix}.{ref}.repair.compress.benchmark.txt",
     params:
