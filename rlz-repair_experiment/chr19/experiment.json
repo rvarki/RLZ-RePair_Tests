@@ -1,7 +1,7 @@
 {
   "workdir": "/blue/boucher/rvarki/rlz-repair_analysis",
   "sequence": "/blue/boucher/rvarki/rlz-repair_analysis/sequences/rlz-repair/chr19/",
-  "reference": "/blue/boucher/rvarki/rlz-repair_analysis/references/SARS/SARS.8000.headerless.fa",
+  "reference": "/blue/boucher/rvarki/rlz-repair_analysis/references/chr19/chr19.5.headerless.fa",
   "script": "/blue/boucher/rvarki/Testing/RLZ-RePair/build/rlz-repair",
   "ref": ["1","2","4","8","16","32","64","128","256","512","1024"],
   "prefix": ["chr19"]
