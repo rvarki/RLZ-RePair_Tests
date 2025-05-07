@@ -5,12 +5,12 @@ import os
 import matplotlib.ticker as ticker
 
 ###########  SARS ########### 
-phrases_0_5 = [576461, 379881, 703391, 1272508, 2584077, 5084916]  
-phrases_1 = [546244, 341331, 629948, 1143093, 2322781, 4565438]  
-phrases_2 = [496715, 307067, 564581, 1024879, 2083750, 4093433]
+phrases_0_5 = [379881, 703391, 1272508, 2584077, 5084916]  
+phrases_1 = [341331, 629948, 1143093, 2322781, 4565438]  
+phrases_2 = [307067, 564581, 1024879, 2083750, 4093433]
 
 # Sequence numbers (x-axis)
-sequence_numbers = [10, 25, 50, 100, 200, 400]
+sequence_numbers = [25, 50, 100, 200, 400]
 
 # Plotting with error bars
 plt.figure(figsize=(6.4, 4))
