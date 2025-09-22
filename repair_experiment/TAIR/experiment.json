@@ -1,8 +1,8 @@
 {
   "workdir": "/blue/boucher/rvarki/rlz-repair_analysis",
   "sequence": "/blue/boucher/rvarki/rlz-repair_analysis/sequences/repair/TAIR/",
-  "compress_script": "/blue/boucher/rvarki/Testing/repair/large/repair",
-  "decompress_script": "/blue/boucher/rvarki/Testing/repair/large/despair",
+  "compress_script": "/blue/boucher/rvarki/Testing/repair/large/bal/repair",
+  "decompress_script": "/blue/boucher/rvarki/Testing/repair/large/bal/despair",
   "ref": ["69"],
   "prefix": ["TAIR"]
 }
