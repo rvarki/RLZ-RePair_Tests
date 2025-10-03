@@ -1,0 +1,62 @@
+import os
+
+# Constrain the wildcards
+wildcard_constraints:
+    ref= '|'.join([re.escape(x) for x in config["ref"]]),
+    prefix= '|'.join([re.escape(x) for x in config["prefix"]]),
+
+# Configure the working directory for the script
+workdir: config['workdir']
+
+outfiles = []
+
+# Output files to generate
+for prefix in config["prefix"]:
+    for ref in config["ref"]:
+        outfiles.append("sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}.fa.rlz".format(prefix=prefix,ref=ref))
+        outfiles.append("sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}.fa.R".format(prefix=prefix,ref=ref))
+        outfiles.append("sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}.fa.C".format(prefix=prefix,ref=ref))
+        outfiles.append("sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}.fa.out".format(prefix=prefix,ref=ref))
+        
+#######################################################################################################
+
+rule all:
+    input: outfiles
+
+rule rlz_repair:
+    input:
+        seq    = config["sequence"] + "{ref}/" + "Gonorrhoeae.{ref}.fa",
+        ref    = config["reference"],
+        script = config["script"]
+    benchmark: "benchmarks/rlz-repair/{prefix}/{prefix}.{ref}.rlz-repair.compress.benchmark.txt",
+    params:
+        log = "logs/rlz-repair/{prefix}/{prefix}.{ref}.rlz-repair.log",
+    output:
+        rlz = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}.fa.rlz",
+        R = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}.fa.R",
+        C = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}.fa.C",
+    shell:
+        """
+        module load gcc/12
+        module load python3
+        {input.script} -s {input.seq} -r {input.ref} -v1 --log {params.log}
+        """
+
+rule rlz_repair_decompression:
+    input:
+        rlz = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}.fa.rlz",
+        R = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}.fa.R",
+        C = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}.fa.C",
+        script = config["script"],
+    benchmark: "benchmarks/rlz-repair/{prefix}/{prefix}.{ref}.rlz-repair.decompress.benchmark.txt",
+    params:
+        prefix = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}.fa",
+        log = "logs/rlz-repair/{prefix}/{prefix}.{ref}.rlz-repair.log",
+    output:
+        decompress = "sequences/rlz-repair/{prefix}/{ref}/{prefix}.{ref}.fa.out",
+    shell:
+        """
+        module load gcc/12
+        module load python3
+        {input.script} -d {params.prefix} -v1 --log {params.log}
+        """

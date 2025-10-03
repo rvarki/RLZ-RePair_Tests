@@ -1,0 +1,61 @@
+import os
+
+# Constrain the wildcards
+wildcard_constraints:
+    ref= '|'.join([re.escape(x) for x in config["ref"]]),
+    prefix= '|'.join([re.escape(x) for x in config["prefix"]]),
+
+# Configure the working directory for the script
+workdir: config['workdir']
+
+outfiles = []
+
+# Output files to generate
+for prefix in config["prefix"]:
+    for ref in config["ref"]:
+        outfiles.append("sequences/rerepair/{prefix}/{ref}/{prefix}.{ref}.fa.R".format(prefix=prefix,ref=ref))
+        outfiles.append("sequences/rerepair/{prefix}/{ref}/{prefix}.{ref}.fa.C".format(prefix=prefix,ref=ref))
+        outfiles.append("sequences/rerepair/{prefix}/{ref}/{prefix}.{ref}.fa.out".format(prefix=prefix,ref=ref))
+        
+#######################################################################################################
+
+rule all:
+    input: outfiles
+
+rule rerepair:
+    input:
+        seq    = config["sequence"] + "{ref}/" + "{prefix}.{ref}.fa",
+        pfp    = config["pfp"],
+        script = config["script"]
+    benchmark: "benchmarks/rerepair/{prefix}/{prefix}.{ref}.rerepair.compress.benchmark.txt",
+    params:
+        outprefix = "sequences/rerepair/{prefix}/{ref}/{prefix}.{ref}.fa",
+        parse = "sequences/rerepair/{prefix}/{ref}/{prefix}.{ref}.fa.parse",
+        log = "logs/rerepair/{prefix}/{prefix}.{ref}.rerepair.log",
+    output:
+        R = "sequences/rerepair/{prefix}/{ref}/{prefix}.{ref}.fa.R",
+        C = "sequences/rerepair/{prefix}/{ref}/{prefix}.{ref}.fa.C",
+    shell:
+        """
+        module load gcc/12
+        {input.pfp} pfp++ -t {input.seq} -w 10 -p 100 -c --tmp-dir ${{SLURM_TMPDIR}}
+        {input.pfp} pfp++ -i {params.parse} -w 10 -p 100 -c --tmp-dir ${{SLURM_TMPDIR}}
+        {input.script} {params.outprefix}
+        """
+
+rule rerepair_decompression:
+    input:
+        R = "sequences/rerepair/{prefix}/{ref}/{prefix}.{ref}.fa.R",
+        C = "sequences/rerepair/{prefix}/{ref}/{prefix}.{ref}.fa.C",
+        script = config["script"],
+    benchmark: "benchmarks/rerepair/{prefix}/{prefix}.{ref}.rerepair.decompress.benchmark.txt",
+    params:
+        prefix = "sequences/rerepair/{prefix}/{ref}/{prefix}.{ref}.fa",
+        log = "logs/rerepair/{prefix}/{prefix}.{ref}k.rerepair.log",
+    output:
+        decompress = "sequences/rerepair/{prefix}/{ref}/{prefix}.{ref}.fa.out",
+    shell:
+        """
+        module load gcc/12
+        {input.script} -d {params.prefix} -k
+        """

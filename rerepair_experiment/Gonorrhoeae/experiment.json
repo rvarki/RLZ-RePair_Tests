@@ -1,0 +1,9 @@
+{
+  "workdir": "/blue/boucher/rvarki/rlz-repair_analysis",
+  "sequence": "/blue/boucher/rvarki/rlz-repair_analysis/sequences/rerepair/Gonorrhoeae/",
+  "script": "/blue/boucher/rvarki/Testing/Recursive-RePair/reRePair",
+  "pfp": "/blue/boucher/rvarki/Testing/Recursive-RePair/pfp_sif",
+  "ref": ["661"],
+  "prefix": ["Gonorrhoeae"]
+}
+
