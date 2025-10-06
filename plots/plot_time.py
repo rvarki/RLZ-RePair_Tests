@@ -96,15 +96,15 @@ plot_file_numbers(
         "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rlz-repair/SARS/final_4000_ref", 
         "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rlz-repair/SARS/final_8000_ref",  
         "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/repair/SARS/normal",
-        "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/repair/SARS/large",
+        "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/repair/SARS/large_b",
         "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/bigrepair/SARS",
-        "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rerepair/SARS"
+        "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rerepair/SARS/ShapedSLP"
     ],
     extension=".compress.benchmark.txt",
     output_basename="sars_time",
     sample="",
     multiplier=True,
-    rlz_rules=["0.5%", "1%", "2%", "default", "large", None, None]
+    rlz_rules=["0.5%", "1%", "2%", "default", "large_b", None, None]
 )
 
 plot_file_numbers(
@@ -113,13 +113,13 @@ plot_file_numbers(
         "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rlz-repair/chr19/final_10_ref", 
         "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rlz-repair/chr19/final_20_ref",   
         "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/repair/chr19/normal",
-        "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/repair/chr19/large",
+        "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/repair/chr19/large_b",
         "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/bigrepair/chr19",
-        "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rerepair/chr19"
+        "/blue/boucher/rvarki/rlz-repair_analysis/benchmarks/rerepair/chr19/ShapedSLP"
     ],
     extension=".compress.benchmark.txt",
     output_basename="chr19_time",
     sample="",
     multiplier=False,
-    rlz_rules=["0.5%","1%","2%", "default", "large", None, None]
+    rlz_rules=["0.5%","1%","2%", "default", "large_b", None, None]
 )
