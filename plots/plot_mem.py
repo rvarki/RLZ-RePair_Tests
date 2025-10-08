@@ -105,7 +105,7 @@ plot_file_numbers(
     output_basename="sars_memory",
     sample="",
     multiplier=True,
-    rlz_rules=["0.5%", "1%", "2%", "default", "large_b", None, None]
+    rlz_rules=["0.5%", "1%", "2%", "default", "large_bal", None, None]
 )
 
 plot_file_numbers(
@@ -122,6 +122,6 @@ plot_file_numbers(
     output_basename="chr19_memory",
     sample="",
     multiplier=False,
-    rlz_rules=["0.5%","1%","2%", "default", "large_b", None, None]
+    rlz_rules=["0.5%","1%","2%", "default", "large_bal", None, None]
 )
 
